@@ -1,7 +1,6 @@
 C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
-C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\obj\Debug\netcoreapp3.1\MFRP_Pension_Detail.csprojAssemblyReference.cache
 C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\obj\Debug\netcoreapp3.1\MFRP_Pension_Detail.AssemblyInfoInputs.cache
 C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\obj\Debug\netcoreapp3.1\MFRP_Pension_Detail.AssemblyInfo.cs
 C:\Users\SAHIL\source\repos\MFRP_Pension_Detail\obj\Debug\netcoreapp3.1\MFRP_Pension_Detail.RazorTargetAssemblyInfo.cache

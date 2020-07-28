@@ -12,26 +12,41 @@ namespace MFRP_Pension_Detail.Controllers
     [ApiController]
     public class PensionerDetailController : ControllerBase
     {
-        private List<PensionerDetail> pensiondetail = new List<PensionerDetail>();
 
-        public PensionerDetailController(List<PensionerDetail> pensiondetails)
-        {
-            pensiondetail = pensiondetails;
-        }
         // GET: api/PensionerDetail
         [HttpGet]
-        public IEnumerable<PensionerDetail> Get()
+        public List<PensionerDetail> Get()
         {
-            return pensiondetail.ToList();
+            List<PensionerDetail> pensionDetails = getDetails();
+            return pensionDetails.ToList();
+
         }
 
         // GET: api/PensionerDetail/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{aadhar}")]
+        public PensionerDetail GetDetail(string aadhar)
         {
-            return "value";
+            List<PensionerDetail> pensionDetails = getDetails();
+            return pensionDetails.FirstOrDefault(s => s.aadharNumber == aadhar);
         }
 
-        
+        public List<PensionerDetail> getDetails()
+        {
+            List<PensionerDetail> pensionerdetail = new List<PensionerDetail>();
+            using (StreamReader sr = new StreamReader(@"D:\Cognizant\Mfrp\demo.csv"))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    string[] values = line.Split(',');
+                    pensionerdetail.Add(new PensionerDetail() { name = values[0], date_of_birth = Convert.ToDateTime(values[1]), pan = values[2], aadharNumber = values[3], salaryEarned = Convert.ToInt32(values[4]), allowances = Convert.ToInt32(values[5]), pensionType = (PensionType)Enum.Parse(typeof(PensionType), values[6]), bankName = values[7], accountNumber = values[8], bankType = (BankType)Enum.Parse(typeof(BankType), values[9]) });
+                    //  Console.WriteLine(values[0]);
+                }
+
+            }
+            return pensionerdetail.ToList();
+        }
+
+
     }
 }
