@@ -12,12 +12,14 @@ namespace MFRP_Pension_Detail.Controllers
     [ApiController]
     public class PensionerDetailController : ControllerBase
     {
+        static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PensionerDetailController));
 
         // GET: api/PensionerDetail
         [HttpGet]
         public List<PensionerDetail> Get()
         {
             List<PensionerDetail> pensionDetails = getDetails();
+            _log4net.Info("Pensioner details invoked!");
             return pensionDetails.ToList();
 
         }
@@ -27,13 +29,16 @@ namespace MFRP_Pension_Detail.Controllers
         public PensionerDetail GetDetail(string aadhar)
         {
             List<PensionerDetail> pensionDetails = getDetails();
+            _log4net.Info("Pensioner details invoked by Aadhar Number!");
             return pensionDetails.FirstOrDefault(s => s.aadharNumber == aadhar);
         }
 
+        [HttpGet]
+        [Route("api/PensionerDetail/csv")]
         public List<PensionerDetail> getDetails()
         {
             List<PensionerDetail> pensionerdetail = new List<PensionerDetail>();
-            using (StreamReader sr = new StreamReader(@"D:\Cognizant\Mfrp\demo.csv"))
+            using (StreamReader sr = new StreamReader(@"D:\demo.csv"))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
