@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,11 @@ namespace MFRP_Pension_Detail.Controllers
     public class PensionerDetailController : ControllerBase
     {
         static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PensionerDetailController));
-
+        private IConfiguration configuration;
+        public PensionerDetailController(IConfiguration iConfig)
+        {
+            configuration = iConfig;
+        }
         // GET: api/PensionerDetail
         [HttpGet]
         public List<PensionerDetail> Get()
@@ -37,8 +42,11 @@ namespace MFRP_Pension_Detail.Controllers
         [Route("api/PensionerDetail/csv")]
         public List<PensionerDetail> getDetails()
         {
+            _log4net.Warn("Data is read from CSV file");
             List<PensionerDetail> pensionerdetail = new List<PensionerDetail>();
-            using (StreamReader sr = new StreamReader(@"D:\demo.csv"))
+
+            string dbConn = configuration.GetValue<string>("MySettings:DbConnection");
+            using (StreamReader sr = new StreamReader(dbConn))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
