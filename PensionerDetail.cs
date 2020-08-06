@@ -8,7 +8,7 @@ namespace MFRP_Pension_Detail
     public class PensionerDetail
     {
         public string name { get; set; }
-        public DateTime date_of_birth{get; set; }
+        public DateTime dateofbirth{get; set; }
         public string pan { get; set; }
         public int salaryEarned { get; set; }
         public int allowances { get; set; }

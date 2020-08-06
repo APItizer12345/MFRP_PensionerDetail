@@ -13,12 +13,21 @@ namespace MFRP_Pension_Detail.Controllers
     [ApiController]
     public class PensionerDetailController : ControllerBase
     {
+        // Defining log Object
+        //--------------------
         static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PensionerDetailController));
         private IConfiguration configuration;
+       // string dbconn = "demo.csv";
+      
+       // Dependency Injection
+       //---------------------
         public PensionerDetailController(IConfiguration iConfig)
         {
             configuration = iConfig;
         }
+        //Getting the details of the pensioner details from csv file 
+        //----------------------------------------------------------------------------------
+
         // GET: api/PensionerDetail
         [HttpGet]
         public List<PensionerDetail> Get()
@@ -28,6 +37,8 @@ namespace MFRP_Pension_Detail.Controllers
             return pensionDetails.ToList();
 
         }
+        //Getting the details of the pensioner details from csv file by giving Aadhar Number
+        //----------------------------------------------------------------------------------
 
         // GET: api/PensionerDetail/5
         [HttpGet("{aadhar}")]
@@ -38,26 +49,35 @@ namespace MFRP_Pension_Detail.Controllers
             return pensionDetails.FirstOrDefault(s => s.aadharNumber == aadhar);
         }
 
+        // Getting the Values from Csv File
+        //----------------------------------
         [HttpGet]
         [Route("api/PensionerDetail/csv")]
         public List<PensionerDetail> getDetails()
         {
-            _log4net.Warn("Data is read from CSV file");
+            _log4net.Warn("Data is read from CSV file");  // Logging Implemented
             List<PensionerDetail> pensionerdetail = new List<PensionerDetail>();
-
-            string dbConn = configuration.GetValue<string>("MySettings:DbConnection");
-            using (StreamReader sr = new StreamReader(dbConn))
+            try
             {
-                string line;
-                while ((line = sr.ReadLine()) != null)
+                string csvConn = configuration.GetValue<string>("MySettings:CsvConnection");  // Initializing the csvConn  for the File path
+                using (StreamReader sr = new StreamReader(csvConn))
                 {
-                    string[] values = line.Split(',');
-                    pensionerdetail.Add(new PensionerDetail() { name = values[0], date_of_birth = Convert.ToDateTime(values[1]), pan = values[2], aadharNumber = values[3], salaryEarned = Convert.ToInt32(values[4]), allowances = Convert.ToInt32(values[5]), pensionType = (PensionType)Enum.Parse(typeof(PensionType), values[6]), bankName = values[7], accountNumber = values[8], bankType = (BankType)Enum.Parse(typeof(BankType), values[9]) });
-                    //  Console.WriteLine(values[0]);
-                }
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        string[] values = line.Split(',');
+                        //Adding the values from file
+                        pensionerdetail.Add(new PensionerDetail() { name = values[0], dateofbirth = Convert.ToDateTime(values[1]), pan = values[2], aadharNumber = values[3], salaryEarned = Convert.ToInt32(values[4]), allowances = Convert.ToInt32(values[5]), pensionType = (PensionType)Enum.Parse(typeof(PensionType), values[6]), bankName = values[7], accountNumber = values[8], bankType = (BankType)Enum.Parse(typeof(BankType), values[9]) });
+                        //  Console.WriteLine(values[0]);
+                    }
 
+                }
             }
-            return pensionerdetail.ToList();
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine("Values not found",e);
+            }
+            return pensionerdetail.ToList();  
         }
 
 
