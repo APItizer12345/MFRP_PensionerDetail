@@ -13,49 +13,59 @@ namespace MFRP_Pension_Detail.Controllers
     [ApiController]
     public class PensionerDetailController : ControllerBase
     {
-        // Defining log Object
-        //--------------------
+        /// <summary>
+        /// Defining log Object
+        /// </summary>
         static readonly log4net.ILog _log4net = log4net.LogManager.GetLogger(typeof(PensionerDetailController));
         private IConfiguration configuration;
-       // string dbconn = "demo.csv";
-      
-       // Dependency Injection
-       //---------------------
+        // string dbconn = "demo.csv";
+
+        /// <summary>
+        ///  Dependency Injection
+        /// </summary>
+        /// <param name="iConfig"></param>
         public PensionerDetailController(IConfiguration iConfig)
         {
             configuration = iConfig;
         }
-        //Getting the details of the pensioner details from csv file 
-        //----------------------------------------------------------------------------------
-
+        /// <summary>
+        /// Getting the details of the pensioner details from csv file 
+        /// </summary>
+        /// <returns> pensioner Values</returns>
+       
         // GET: api/PensionerDetail
-        [HttpGet]
-        public List<PensionerDetail> Get()
-        {
-            List<PensionerDetail> pensionDetails = getDetails();
-            _log4net.Info("Pensioner details invoked!");
-            return pensionDetails.ToList();
+        //[HttpGet]
+        //public List<PensionerDetail> Get()
+        //{
+        //    List<PensionerDetail> pensionDetails = GetDetailsCsv();
+        //    _log4net.Info("Pensioner details invoked!");
+        //    return pensionDetails.ToList();
 
-        }
-        //Getting the details of the pensioner details from csv file by giving Aadhar Number
-        //----------------------------------------------------------------------------------
+        //}
 
+
+        ///Summary
+        ///Getting the details of the pensioner details from csv file by giving Aadhar Number
+        ///Summary
+        /// <returns> pensioner Values</returns>
+        /// 
         // GET: api/PensionerDetail/5
         [HttpGet("{aadhar}")]
-        public PensionerDetail GetDetail(string aadhar)
+        public PensionerDetail PensionerDetailByAadhar(string aadhar)
         {
-            List<PensionerDetail> pensionDetails = getDetails();
+            List<PensionerDetail> pensionDetails = GetDetailsCsv();
             _log4net.Info("Pensioner details invoked by Aadhar Number!");
-            return pensionDetails.FirstOrDefault(s => s.aadharNumber == aadhar);
+            return pensionDetails.FirstOrDefault(s => s.AadharNumber == aadhar);
         }
 
-        // Getting the Values from Csv File
-        //----------------------------------
-        [HttpGet]
-        [Route("api/PensionerDetail/csv")]
-        public List<PensionerDetail> getDetails()
+        ///Summary
+        /// Getting the Values from Csv File 
+        ///Summary
+        /// <returns> Returning the list of values</returns>
+       
+        private List<PensionerDetail> GetDetailsCsv()
         {
-            _log4net.Warn("Data is read from CSV file");  // Logging Implemented
+            _log4net.Info("Data is read from CSV file");  // Logging Implemented
             List<PensionerDetail> pensionerdetail = new List<PensionerDetail>();
             try
             {
@@ -67,7 +77,7 @@ namespace MFRP_Pension_Detail.Controllers
                     {
                         string[] values = line.Split(',');
                         //Adding the values from file
-                        pensionerdetail.Add(new PensionerDetail() { name = values[0], dateofbirth = Convert.ToDateTime(values[1]), pan = values[2], aadharNumber = values[3], salaryEarned = Convert.ToInt32(values[4]), allowances = Convert.ToInt32(values[5]), pensionType = (PensionType)Enum.Parse(typeof(PensionType), values[6]), bankName = values[7], accountNumber = values[8], bankType = (BankType)Enum.Parse(typeof(BankType), values[9]) });
+                        pensionerdetail.Add(new PensionerDetail() { Name = values[0], Dateofbirth = Convert.ToDateTime(values[1]), Pan = values[2], AadharNumber = values[3], SalaryEarned = Convert.ToInt32(values[4]), Allowances = Convert.ToInt32(values[5]), PensionType = (PensionTypeValue)Enum.Parse(typeof(PensionTypeValue), values[6]), BankName = values[7], AccountNumber = values[8], BankType = (BankType)Enum.Parse(typeof(BankType), values[9]) });
                         //  Console.WriteLine(values[0]);
                     }
 
@@ -75,7 +85,8 @@ namespace MFRP_Pension_Detail.Controllers
             }
             catch (NullReferenceException e)
             {
-                Console.WriteLine("Values not found",e);
+                //Console.WriteLine("Values not found",e);
+                return null;
             }
             return pensionerdetail.ToList();  
         }

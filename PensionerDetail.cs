@@ -5,23 +5,26 @@ using System.Threading.Tasks;
 
 namespace MFRP_Pension_Detail
 {
+    /// <summary>
+    ///  Pensioner Details 
+    /// </summary>
     public class PensionerDetail
     {
-        public string name { get; set; }
-        public DateTime dateofbirth{get; set; }
-        public string pan { get; set; }
-        public int salaryEarned { get; set; }
-        public int allowances { get; set; }
-        public string aadharNumber { get; set; }
-        public PensionType pensionType { get; set; }
-        public string bankName { get; set; }
-        public string accountNumber { get; set; }
-        public BankType bankType { get; set; }
+        public string Name { get; set; }
+        public DateTime Dateofbirth{get; set; }
+        public string Pan { get; set; }
+        public int SalaryEarned { get; set; }
+        public int Allowances { get; set; }
+        public string AadharNumber { get; set; }
+        public PensionTypeValue PensionType { get; set; }
+        public string BankName { get; set; }
+        public string AccountNumber { get; set; }
+        public BankType BankType { get; set; }
 
 
     }
 
-    public enum PensionType
+    public enum PensionTypeValue
     {
         Self=1,
         Family=2
